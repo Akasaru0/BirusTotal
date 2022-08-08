@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BirusTotal</title>
+</head>
+<body>
+    <h1>BirusTotal</h1>
+    <h2>Hash Convertisser</h2>
+    <form action="">
+        <label for="fhash">Hash:</label><br>
+        <textarea name="" id="fhash" cols="30" value="99017f6eebbac24f351415dd410d522d 9834876DCFB05CB167A5C24953EBA58C4AC89B1ADF57F28F2F9D09AF107EE8F0" rows="10"></textarea>
+        <input type="button" value="Sumbit" onclick="userAction()"><br>
+    </form>
+    <div id="result">
+    </div>
+
+</body>
+</html>
+<script>
+    const userAction = async () => {
+        document.getElementById("result").innerHTML = "";
+        var str = document.getElementById("fhash").value
+        var hashs = str.split(/\r?\n|\r|\n/g)
+
+        var count = 0
+        for (let index = 0; index < hashs.length; index++) {
+            console.log(count)
+            //ask the api for result
+            if(count == 4){
+
+                setTimeout(()=>{
+                    console.log('timeout brooooo');
+                },10000)
+                
+            }
+            const response = await fetch('http://15.236.6.128/api?hash='+hashs[index]);
+            const myJson = await response.json(); //extract JSON from the http response
+            // document.getElementById("md5").innerHTML = "md5 : "+myJson.md5;
+            // document.getElementById("sha256").innerHTML = "sha256 : "+myJson.sha256;
+
+
+            //inser res in the page
+            const res = document.createElement("p");
+            res.appendChild(document.createTextNode("md5 : "+myJson.md5+" | sha256 : "+myJson.sha256))
+            const element = document.getElementById("result")
+            element.appendChild(res)
+            count = count + 1
+        }
+
+
+    }
+</script>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <link rel="icon" type="image/x-icon" href="/birustotal.ico">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>BirusTotal</title>
+</head>
+
+</div>
+<body>
+    <div id="top-bar">
+        <img src="birustotal.ico"  id="logo-topbar">
+        <h1>BirusTotal</h1>
+        <input id="search" onkeydown="userAction()" placeholder ="Hash">
+        <div onclick="userAction()" id="search_button">
+            <svg id='loupe' xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M19.7,19L15,14.3c2-2.3,1.9-5.9-0.3-8.1c-2.3-2.3-6.1-2.3-8.5,0c-2.3,2.3-2.3,6.1,0,8.5c1.2,1.2,2.7,1.8,4.2,1.8
+                c1.4,0,2.7-0.5,3.8-1.4l4.7,4.7L19.7,19z M7,14C5,12.1,5,8.9,7,7c1-1,2.2-1.5,3.5-1.5C11.8,5.5,13,6,14,7C16,8.9,16,12.1,14,14
+                C12.1,16,8.9,16,7,14z"></path>
+            </svg>
+        </div>
+    </diV>
+    <div id=content>
+        <div id="info-hash"></div>
+        <div id="result">
+            <h3 id="scan_id"></h3>
+            <div id="tab_hash">
+                <div id="progress-bar"></div>
+                <div id="tab-hash-r">
+                    <p id ="scan_date"></p>
+
+                    <p id="total_positive"></p>
+                    <p id="permalink"></p>
+                </div>
+                <div id="tab-hash-l">    
+                    <h3 id="title-hash-info"></h3>
+                    <p id = "md5"></p> 
+                    <p id = "sha256"></p> 
+                    <p id = "sha1"></p>
+                </div>
+                
+            </div>
+            <h3 id="title-security"></h3>
+            <div id="tab_analyst"></div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+
+<script>
+    const userAction = async () => {
+        var hash = document.getElementById("search").value
+        const response = await fetch('http://15.236.6.128/api?hash='+hash);
+        const myJson = await response.json(); //extract JSON from the http response
+        // do something with myJson
+        //Set Header
+        document.getElementById("title-hash-info").innerHTML = "Hah info";
+        document.getElementById("title-security").innerHTML = "Security Vendors Analysis";
+        document.getElementById("info-hash").innerHTML = "<h2>Info-Hash</h2>";
+        //Set Scan id
+        document.getElementById("scan_id").innerHTML = "<h3>Scan id : "+myJson.scan_id+"</h3>"
+
+        //Set differents hash
+        document.getElementById("md5").innerHTML = "MD5 : "+myJson.md5+"";
+        document.getElementById("sha256").innerHTML = "sha256 : "+myJson.sha256;
+        document.getElementById("sha1").innerHTML = "sha1 : "+myJson.sha1;
+        document.getElementById("scan_date").innerHTML = "scan date : "+myJson.scan_date;
+        document.getElementById("total_positive").innerHTML = "total positive : "+myJson.positives+"/"+myJson.total;
+
+
+        //circle
+        //<div role="progressbar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100" style="--value:65"></div>
+        var div_circle = document.getElementById("progress-bar")
+        div_circle.setAttribute("role", "progressbar")
+        div_circle.setAttribute('aria-valuemin', "0")
+        div_circle.setAttribute('aria-valuenow', parseInt(parseInt(myJson.positives)*100/parseInt(myJson.total)));
+        div_circle.setAttribute("aria-valuemax", "100")
+        if(parseInt(parseInt(myJson.positives)*100/parseInt(myJson.total))<50){
+            div_circle.style = "--value:"+parseInt(parseInt(myJson.positives)*100/parseInt(myJson.total)) +";--txt:'"+myJson.positives+"/"+myJson.total+"'";
+        }else{
+            div_circle.style = "--value:"+parseInt(parseInt(myJson.positives)*100/parseInt(myJson.total)) +";--txt:'"+myJson.positives+"/"+myJson.total+"';--fg:#ff0000";
+        }
+        
+        
+
+
+
+
+        names = Object.keys(myJson.scans)
+        values = Object.values(myJson.scans)
+        
+
+        var tab = document.getElementById("tab_analyst")
+        tab.innerHTML = "";
+        for (let index = 0; index < names.length; index++) {
+
+            //Creation div analysis
+            var div = document.createElement("div")
+            div.className ="analysis"
+
+
+            var parg = document.createElement("p")
+            parg.className = 'name'
+            parg.appendChild(document.createTextNode(names[index]))
+
+            div.appendChild(parg)
+
+            var parg = document.createElement("p")
+            parg.className = 'result'
+            parg.appendChild(document.createTextNode(values[index].result))
+
+            if (values[index].detected) {
+                
+                var parg = document.createElement("p")
+                parg.className = 'result'
+                parg.appendChild(document.createTextNode(values[index].result))
+                parg.style.color = "red"
+            }else{
+                var parg = document.createElement("p")
+                parg.className = 'result'
+                parg.appendChild(document.createTextNode("Undetected"))
+                parg.style.color = "green"
+                
+            }
+
+
+            div.appendChild(parg)
+            
+            var parg = document.createElement("p")
+            parg.className = 'update'
+            parg.appendChild(document.createTextNode(values[index].update))
+
+            div.appendChild(parg)
+
+
+            var element = document.getElementById("tab_analyst")
+            element.appendChild(div)
+
+        }
+    }
+</script>

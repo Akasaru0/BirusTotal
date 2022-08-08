@@ -1,0 +1,139 @@
+.analysis {
+    display : flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-flow: row wrap;
+    border: 1px solid;
+    box-sizing: border-box;
+
+}
+body{
+    margin :0;
+}
+#tab_analyst{
+    display: flex;
+    flex-direction: column;
+}
+.name{
+    flex-grow: 1;
+    text-align: center;
+    width: 100px;
+}
+.result{
+    flex-grow: 1;
+    text-align: center;
+    width: 100px;
+}
+.update{
+    flex-grow: 1;
+    text-align: center;
+    width: 100px;
+}
+#logo-topbar{
+    height: 100%;
+    border-right: grey;
+}
+#top-bar{
+    position: relative;
+    top : 0px;
+    left: 0px;
+    bottom: 60px;
+    display: flex;
+    align-items: center;
+    height: 60px;
+    width: 100%;
+    border-bottom: 1px solid rgba(17, 17, 17, 0.16);
+    box-shadow: rgba(17, 17, 17, 0.16) 0px 4px 8px -3px;
+}
+#search{
+    height: 99%;
+    width: 75%;
+    margin-left: 10px;
+    border: 1px solid rgba(17, 17, 17, 0.16);
+    border-top: 0;
+    color: #666666;
+    outline: none;
+    
+}
+#search_button{
+    height: 100%;
+    background-color: #f9f9f9;
+    border: none;
+    text-align: center;
+    display: inline-block; 
+    border-right: 1px solid rgba(17, 17, 17, 0.16);   
+}
+#loupe{
+    vertical-align: middle;
+    height: 100%;
+    width: 70%;
+    
+}
+#content{
+    margin-right: 15%;
+    margin-left: 15%;
+}
+#tab_hash{
+    display: flex;
+    justify-content: center;
+}
+#tab-hash-r{
+    align-self: flex-end;
+}
+#tab-hash-l{
+    align-self: flex-end;
+    padding-left: 15%;
+}
+
+
+
+.circle-wrap {
+    margin: 150px auto;
+    width: 150px;
+    height: 150px;
+    background: #fffcfc;
+    border-radius: 50%;
+    border: 1px solid #cdcbd0;
+  }
+
+
+
+
+
+  @keyframes growProgressBar {
+    0%, 33% { --pgPercentage: 0; }
+    100% { --pgPercentage: var(--value); }
+  }
+  
+  @property --pgPercentage {
+    syntax: '<number>';
+    inherits: false;
+    initial-value: 0;
+  }
+  
+  div[role="progressbar"] {
+    --size: 12rem;
+    --fg: #369;
+    --bg: #def;
+    --pgPercentage: var(--value);
+    animation: growProgressBar 3s 1 forwards;
+    width: var(--size);
+    height: var(--size);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: 
+      radial-gradient(closest-side, white 80%, transparent 0 99.9%, white 0),
+      conic-gradient(var(--fg) calc(var(--pgPercentage) * 1%), var(--bg) 0)
+      ;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: calc(var(--size) / 5);
+    color: var(--fg);
+  }
+  
+  div[role="progressbar"]::before {
+    content: var(--txt);
+  }
+  
+  
+  
